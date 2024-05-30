@@ -1,7 +1,7 @@
 from fastapi import FastAPI
-from fastapi_mqtt import FastMQTT, MQTTConfig
+# from fastapi_mqtt import FastMQTT, MQTTConfig
 
-from hdmi_matrix import HdmiMatrix, Power
+from .hdmi_matrix import HdmiMatrix, Power
 import socket
 import os
 
@@ -10,38 +10,38 @@ import os
 
 app = FastAPI()
 
-mqtt_config = MQTTConfig(host="192.168.110.201",
-                         port=1883,
-                         keepalive=60)
+# mqtt_config = MQTTConfig(host="192.168.110.201",
+#                          port=1883,
+#                          keepalive=60)
 
-mqtt = FastMQTT(
-    config=mqtt_config
-)
+# mqtt = FastMQTT(
+#     config=mqtt_config
+# )
 
-mqtt.init_app(app)
+# mqtt.init_app(app)
 
 
-@mqtt.on_connect()
-def connect(client, flags, rc, properties):
-    mqtt.client.subscribe("/mqtt") #subscribing mqtt topic
-    print("Connected: ", client, flags, rc, properties)
+# @mqtt.on_connect()
+# def connect(client, flags, rc, properties):
+#     mqtt.client.subscribe("/mqtt") #subscribing mqtt topic
+#     print("Connected: ", client, flags, rc, properties)
 
-@mqtt.on_message()
-async def message(client, topic, payload, qos, properties):
-    print("Received message: ",topic, payload.decode(), qos, properties)
-    return 0
+# @mqtt.on_message()
+# async def message(client, topic, payload, qos, properties):
+#     print("Received message: ",topic, payload.decode(), qos, properties)
+#     return 0
 
-@mqtt.subscribe("my/mqtt/topic/#")
-async def message_to_topic(client, topic, payload, qos, properties):
-    print("Received message to specific topic: ", topic, payload.decode(), qos, properties)
+# @mqtt.subscribe("my/mqtt/topic/#")
+# async def message_to_topic(client, topic, payload, qos, properties):
+#     print("Received message to specific topic: ", topic, payload.decode(), qos, properties)
 
-@mqtt.on_disconnect()
-def disconnect(client, packet, exc=None):
-    print("Disconnected")
+# @mqtt.on_disconnect()
+# def disconnect(client, packet, exc=None):
+#     print("Disconnected")
 
-@mqtt.on_subscribe()
-def subscribe(client, mid, qos, properties):
-    print("subscribed", client, mid, qos, properties)
+# @mqtt.on_subscribe()
+# def subscribe(client, mid, qos, properties):
+#     print("subscribed", client, mid, qos, properties)
 
 
 s = socket.socket()
@@ -60,7 +60,7 @@ matrix = HdmiMatrix(io[0], io[1], s)
 
 @app.get("/")
 async def root():
-    mqtt.publish("/mqtt", "Hdmi Matrix Controller")  # publishing mqtt topic
+    # mqtt.publish("/mqtt", "Hdmi Matrix Controller")  # publishing mqtt topic
     return {"message": "Hdmi Matrix Controller"}
 
 
